@@ -1,4 +1,7 @@
 __pycache__/
 *.py[co]
+*.sqlite3
 
 node_modules/
+
+.vscode/
