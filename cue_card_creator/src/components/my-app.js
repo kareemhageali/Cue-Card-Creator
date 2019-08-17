@@ -9,7 +9,8 @@ import '@polymer/app-layout/app-scroll-effects/effects/waterfall.js';
 import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 
 import { store } from '../store.js';
-import { navigate } from '../actions/app.js';
+import { navigate, setInitialValues } from '../actions/app.js';
+import { getCookie } from '../../helpers.js';
 
 class MyApp extends connect(store)(LitElement) {
   static get properties() {
@@ -68,6 +69,7 @@ class MyApp extends connect(store)(LitElement) {
     // To force all event listeners for gestures to be passive.
     // See https://www.polymer-project.org/3.0/docs/devguide/settings#setting-passive-touch-gestures
     setPassiveTouchGestures(true);
+    this._getInitialValues();
   }
 
   firstUpdated() {
@@ -76,6 +78,17 @@ class MyApp extends connect(store)(LitElement) {
 
   stateChanged(state) {
     this._page = state.app.page;
+  }
+
+  _getInitialValues() {
+    const visitorIdQuery = getCookie('visitor_id') ? '?visitor_id=' + getCookie('visitor_id') : '';
+    fetch('http://localhost:8000/api/get_initial_values' + visitorIdQuery)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(initialValues) {
+        store.dispatch(setInitialValues(initialValues));
+      });
   }
 }
 

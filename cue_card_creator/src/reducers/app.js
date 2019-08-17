@@ -1,7 +1,8 @@
-import {UPDATE_PAGE} from '../actions/app.js';
+import {UPDATE_PAGE, SET_INITIAL_VALUES} from '../actions/app.js';
 
 const INITIAL_STATE = {
   page: '',
+  visitorId: null,
 };
 
 const app = (state = INITIAL_STATE, action) => {
@@ -11,6 +12,11 @@ const app = (state = INITIAL_STATE, action) => {
         ...state,
         page: action.page
       };
+      case SET_INITIAL_VALUES:
+        return {
+          ...state,
+          visitorId: action.initialValues.visitor_id
+        };
     default:
       return state;
   }

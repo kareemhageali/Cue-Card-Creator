@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Visitor(models.Model):
-    ip_address = models.CharField(max_length=50)
+    ip_address = models.CharField(max_length=50, blank=True)
 
 
 class Card(models.Model):
