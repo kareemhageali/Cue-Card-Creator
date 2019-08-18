@@ -61,10 +61,9 @@ class CardCreator extends connect(store)(LitElement) {
     const requestBody = {question: this.shadowRoot.querySelector('#questionInput').value,
                           answer: this.shadowRoot.querySelector('#answerInput').value,
                           visitor: store.getState().app.visitorId};
-    fetch('http://localhost:8000/api/cards/',
-          {method: 'POST',
-            body: JSON.stringify(requestBody),
-            headers: {'Content-Type': 'application/json'}});
+    fetch('/api/cards/', {method: 'POST',
+                          body: JSON.stringify(requestBody),
+                          headers: {'Content-Type': 'application/json'}});
     return;
   }
 
