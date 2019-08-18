@@ -7,10 +7,10 @@ from api.utils import create_uuid
 
 
 def get_initial_values(request):
-    visitor = Visitor.objects.filter(id=request.GET.get('visitor_id')).first()
+    visitor = Visitor.objects.filter(id=request.GET.get('visitor')).first()
     if not visitor:
         visitor = Visitor.objects.create(id=create_uuid(Visitor))
-    response = JsonResponse({'visitor_id': visitor.id})
+    response = JsonResponse({'visitor': visitor.id})
     return response
 
 

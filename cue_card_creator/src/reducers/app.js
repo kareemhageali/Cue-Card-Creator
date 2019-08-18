@@ -16,7 +16,7 @@ const app = (state = INITIAL_STATE, action) => {
     case SET_INITIAL_VALUES:
       return {
         ...state,
-        visitorId: action.initialValues.visitor_id
+        visitorId: action.initialValues.visitor
       };
     case RETRIEVE_COLLECTIONS:
       return {

@@ -15,7 +15,7 @@ export const navigate = (path) => (dispatch) => {
 
 export const setInitialValues = (initialValues) => {
   if (!getCookie('visitor_id')) {
-    setCookie('visitor_id', initialValues.visitor_id);
+    setCookie('visitor_id', initialValues.visitor);
   }
   return {
     type: SET_INITIAL_VALUES,

@@ -81,8 +81,8 @@ class MyApp extends connect(store)(LitElement) {
   }
 
   _getInitialValues() {
-    const visitorIdQuery = getCookie('visitor_id') ? '?visitor_id=' + getCookie('visitor_id') : '';
-    fetch('/api/get_initial_values' + visitorIdQuery)
+    const visitorIdQuery = getCookie('visitor_id') ? '?visitor=' + getCookie('visitor_id') : '';
+    fetch('/api/get_initial_values/' + visitorIdQuery)
       .then(function(response) {
         return response.json();
       })

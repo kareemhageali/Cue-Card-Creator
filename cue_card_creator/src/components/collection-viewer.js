@@ -76,7 +76,7 @@ class CollectionViewer extends connect(store)(LitElement) {
   }
 
   _getCollections() {
-    fetch('/api/collections?visitor=' + store.getState().app.visitorId)
+    fetch('/api/collections/?visitor=' + store.getState().app.visitorId)
       .then(function(response) {
         return response.json();
       })
