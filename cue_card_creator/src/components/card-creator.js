@@ -42,14 +42,14 @@ class CardCreator extends connect(store)(LitElement) {
 
   render() {
     return html`
-        <div class="card-creation-content">
-            <iron-autogrow-textarea rows="4" placeholder="Input your question"></iron-autogrow-textarea>
-            <iron-autogrow-textarea rows="2" placeholder="What is the answer?"></iron-autogrow-textarea>
-            <div>
-                <paper-button @click="${this._createCard}">Create</paper-button>
-                <paper-button @click="${this._finishCreation}">Finish</paper-button>
-            </div>
-        </div>
+      <div class="card-creation-content">
+          <iron-autogrow-textarea id="questionInput" rows="4" placeholder="Input your question"></iron-autogrow-textarea>
+          <iron-autogrow-textarea id="answerInput" rows="2" placeholder="What is the answer?"></iron-autogrow-textarea>
+          <div>
+              <paper-button @click="${this._createCard}">Create</paper-button>
+              <paper-button @click="${this._finishCreation}">Finish</paper-button>
+          </div>
+      </div>
     `;
   }
 
@@ -58,11 +58,17 @@ class CardCreator extends connect(store)(LitElement) {
   }
 
   _createCard() {
-      return;
+    const requestBody = {question: this.shadowRoot.querySelector('#questionInput').value,
+                          answer: this.shadowRoot.querySelector('#answerInput').value,
+                          visitor: store.getState().app.visitorId};
+    fetch('/api/cards/', {method: 'POST',
+                          body: JSON.stringify(requestBody),
+                          headers: {'Content-Type': 'application/json'}});
+    return;
   }
 
   _finishCreation() {
-      return;
+    return;
   }
 }
 
