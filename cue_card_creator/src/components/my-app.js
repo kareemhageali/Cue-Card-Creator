@@ -59,6 +59,7 @@ class MyApp extends connect(store)(LitElement) {
   render() {
     return html`
       <main role="main" class="main-content">
+        <collection-viewer class="page" ?active="${this._page === 'collections'}"></collection-viewer>
         <card-creator class="page" ?active="${this._page === 'create'}"></card-creator>
       </main>
     `;
@@ -67,7 +68,6 @@ class MyApp extends connect(store)(LitElement) {
   constructor() {
     super();
     // To force all event listeners for gestures to be passive.
-    // See https://www.polymer-project.org/3.0/docs/devguide/settings#setting-passive-touch-gestures
     setPassiveTouchGestures(true);
     this._getInitialValues();
   }

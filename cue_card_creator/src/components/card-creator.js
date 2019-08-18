@@ -17,24 +17,24 @@ class CardCreator extends connect(store)(LitElement) {
     return [
       css`
         .card-creation-content {
-            display: flex;
-            flex-direction: column;
-            width: 80%;
-            margin: auto;
+          display: flex;
+          flex-direction: column;
+          width: 80%;
+          margin: auto;
         }
 
         .card-creation-content > iron-autogrow-textarea {
-            width: 100%;
+          width: 100%;
         }
 
         paper-button {
-            background-color: var(--paper-button-primary-color);
-            color: var(--paper-button-text-color);
-            width: 50px;
-            margin-top: 5px;
-            margin-left: 0;
-            padding-left: 0;
-            padding-right: 0;
+          background-color: var(--paper-button-primary-color);
+          color: var(--paper-button-text-color);
+          width: 50px;
+          margin-top: 5px;
+          margin-left: 0;
+          padding-left: 0;
+          padding-right: 0;
         }
       `
     ];
