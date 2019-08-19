@@ -5,13 +5,13 @@ import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-card/paper-card.js';
 
 import { store } from '../store.js';
-import { retrieveCollections } from '../actions/app.js';
+import { retrieveCollections, selectCollection, navigate } from '../actions/app.js';
 
 
 class CollectionViewer extends connect(store)(LitElement) {
   static get properties() {
     return {
-      _collections: {type: Array},
+      _collections: { type: Array },
     };
   }
 
@@ -26,6 +26,10 @@ class CollectionViewer extends connect(store)(LitElement) {
 
         paper-card:not(:first-of-type) {
           margin-top: 50px;
+        }
+
+        paper-card:last-of-type {
+          margin-bottom: 50px;
         }
 
         .collection-viewer-content {
@@ -58,7 +62,7 @@ class CollectionViewer extends connect(store)(LitElement) {
             <div>${collection.cards.length === 1 ? '1 card' : collection.cards.length + ' cards'}</div>
             <div class="card-buttons">
                 <paper-button @click="${this._openQuestions}">Start Answering</paper-button>
-                <paper-button @click="${this._viewCards}">View Cards</paper-button>
+                <paper-button @click="${() => this._viewCards(collection)}">View Cards</paper-button>
             </div>
           </paper-card>
         `
@@ -86,11 +90,13 @@ class CollectionViewer extends connect(store)(LitElement) {
   }
 
   _openQuestions() {
-    return;
+    store.dispatch(selectCollection(collectionId));
+    store.dispatch(navigate('/questions'));
   }
 
-  _viewCards() {
-    return;
+  _viewCards(collection) {
+    store.dispatch(selectCollection(collection));
+    store.dispatch(navigate('/create'));
   }
 }
 

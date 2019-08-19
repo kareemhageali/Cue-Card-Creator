@@ -3,6 +3,8 @@ import {getCookie, setCookie} from '../../helpers.js';
 export const UPDATE_PAGE = 'UPDATE_PAGE';
 export const SET_INITIAL_VALUES = 'SET_INITIAL_VALUES';
 export const RETRIEVE_COLLECTIONS = 'RETRIEVE_COLLECTIONS';
+export const RETRIEVE_CARDS = 'RETRIEVE_CARDS'
+export const SELECT_COLLECTION = 'SELECT_COLLECTION';
 
 export const navigate = (path) => (dispatch) => {
   // Extract the page name from path.
@@ -27,6 +29,21 @@ export const retrieveCollections = (collections) => {
   return {
     type: RETRIEVE_COLLECTIONS,
     collections
+  };
+};
+
+export const retrieveCards = (cards, currentCollection) => {
+  return {
+    type: RETRIEVE_CARDS,
+    cards,
+    currentCollection
+  };
+};
+
+export const selectCollection = (selectedCollection) => {
+  return {
+    type: SELECT_COLLECTION,
+    selectedCollection
   };
 };
 

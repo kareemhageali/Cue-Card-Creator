@@ -1,8 +1,9 @@
-import {UPDATE_PAGE, SET_INITIAL_VALUES, RETRIEVE_COLLECTIONS} from '../actions/app.js';
+import {UPDATE_PAGE, SET_INITIAL_VALUES, RETRIEVE_COLLECTIONS, SELECT_COLLECTION, RETRIEVE_CARDS} from '../actions/app.js';
 
 const INITIAL_STATE = {
   page: '',
   visitorId: null,
+  currentCollection: null,
   collections: [],
 };
 
@@ -22,6 +23,20 @@ const app = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         collections: action.collections
+      };
+    case RETRIEVE_CARDS:
+      const foundIndex = state.collections.findIndex(x => x.id === action.currentCollection.id);
+      const tempCollections = state.collections;
+      tempCollections[foundIndex] = {...tempCollections[foundIndex],
+                                     cards: action.cards};
+      return {
+        ...state,
+        collections: tempCollections
+      };
+    case SELECT_COLLECTION:
+      return {
+        ...state,
+        currentCollection: action.selectedCollection
       };
     default:
       return state;
