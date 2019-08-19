@@ -55,6 +55,9 @@ const loadPage = (page) => (dispatch) => {
     case 'collections':
       import('../components/collection-viewer.js');
       break;
+    case 'questions':
+      import('../components/questions-page.js');
+      break;
     default:
       return;
   }

@@ -61,8 +61,11 @@ class CollectionViewer extends connect(store)(LitElement) {
             <div id="collectionName">${collection.name}</div>
             <div>${collection.cards.length === 1 ? '1 card' : collection.cards.length + ' cards'}</div>
             <div class="card-buttons">
-                <paper-button @click="${this._openQuestions}">Start Answering</paper-button>
-                <paper-button @click="${() => this._viewCards(collection)}">View Cards</paper-button>
+                <paper-button @click="${() => this._openQuestions(collection)}">Start Answering</paper-button>
+                ${this._currentVisitor === collection.visitor ?
+                    html`
+                      <paper-button @click="${() => this._viewCards(collection)}">View Cards</paper-button>
+                    ` : null}
             </div>
           </paper-card>
         `
@@ -76,6 +79,7 @@ class CollectionViewer extends connect(store)(LitElement) {
   }
 
   stateChanged(state) {
+    this._currentVisitor = state.app.visitorId;
     this._collections = state.app.collections;
   }
 
@@ -89,8 +93,8 @@ class CollectionViewer extends connect(store)(LitElement) {
       });
   }
 
-  _openQuestions() {
-    store.dispatch(selectCollection(collectionId));
+  _openQuestions(collection) {
+    store.dispatch(selectCollection(collection));
     store.dispatch(navigate('/questions'));
   }
 
