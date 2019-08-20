@@ -14,9 +14,13 @@ class CardSerializer(serializers.ModelSerializer):
             'id': {'default': create_uuid(Card)}
         }
 
+    def create(self, validated_data):
+        validated_data['id'] = create_uuid(Card)
+        return super().create(validated_data)
+
 
 class CollectionSerializer(serializers.ModelSerializer):
-    cards = CardSerializer(many=True)
+    cards = CardSerializer(many=True, required=False)
 
     class Meta:
         model = Collection
@@ -24,3 +28,7 @@ class CollectionSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'id': {'default': create_uuid(Collection)}
         }
+
+    def create(self, validated_data):
+        validated_data['id'] = create_uuid(Collection)
+        return super().create(validated_data)

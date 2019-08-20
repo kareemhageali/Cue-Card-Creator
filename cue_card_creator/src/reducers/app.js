@@ -1,4 +1,5 @@
-import {UPDATE_PAGE, SET_INITIAL_VALUES, RETRIEVE_COLLECTIONS, SELECT_COLLECTION, RETRIEVE_CARDS} from '../actions/app.js';
+import {UPDATE_PAGE, SET_INITIAL_VALUES, RETRIEVE_COLLECTIONS,
+  RETRIEVE_COLLECTION, SELECT_COLLECTION, RETRIEVE_CARDS} from '../actions/app.js';
 
 const INITIAL_STATE = {
   page: '',
@@ -23,6 +24,11 @@ const app = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         collections: action.collections
+      };
+    case RETRIEVE_COLLECTION:
+      return {
+        ...state,
+        collections: [...state.collections, action.collection]
       };
     case RETRIEVE_CARDS:
       const foundIndex = state.collections.findIndex(x => x.id === action.currentCollection.id);

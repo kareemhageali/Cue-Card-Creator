@@ -3,6 +3,7 @@ import {getCookie, setCookie} from '../../helpers.js';
 export const UPDATE_PAGE = 'UPDATE_PAGE';
 export const SET_INITIAL_VALUES = 'SET_INITIAL_VALUES';
 export const RETRIEVE_COLLECTIONS = 'RETRIEVE_COLLECTIONS';
+export const RETRIEVE_COLLECTION = 'RETRIEVE_COLLECTION';
 export const RETRIEVE_CARDS = 'RETRIEVE_CARDS'
 export const SELECT_COLLECTION = 'SELECT_COLLECTION';
 
@@ -30,6 +31,13 @@ export const retrieveCollections = (collections) => {
     type: RETRIEVE_COLLECTIONS,
     collections
   };
+};
+
+export const retrieveCollection = (collection) => {
+  return {
+    type: RETRIEVE_COLLECTION,
+    collection
+  }
 };
 
 export const retrieveCards = (cards, currentCollection) => {
