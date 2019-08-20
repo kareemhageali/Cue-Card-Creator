@@ -57,9 +57,44 @@ class QuestionsPage extends connect(store)(LitElement) {
           margin-top: 20px;
         }
 
-        .title {
+        .answer-content > div {
+          margin-top: 10px;
           font-size: 18px;
+        }
+
+        .answer-content {
+          margin-top: 8px;
+          padding-bottom: 18px;
+        }
+
+        .answer-content:not(:last-of-type) {
+          border-bottom: 3px solid gray;
+        }
+
+
+        .title {
+          font-size: 24px;
           font-weight: bold;
+        }
+
+        .incorrect-answers {
+          box-shadow: 3px 3px 3px 5px red;
+        }
+
+        .correct-answers {
+          box-shadow: 3px 3px 3px 5px green;
+        }
+
+        .page-title {
+          font-size: 32px;
+        }
+
+        .results-header {
+          display: flex;
+          flex-direction: column;
+          width: 80%;
+          margin: auto;
+          margin-bottom: 15px;
         }
       `
     ];
@@ -79,16 +114,38 @@ class QuestionsPage extends connect(store)(LitElement) {
       </div>
 
       <div class="content-block" ?active="${this._activePage === 'answers'}">
+        <div class="results-header">
+          <div class="page-title">Your results from collection: ${store.getState().app.currentCollection.name}</div>
+          <paper-button @click="${() => this._initializeQuestions()}">Retry?</paper-button>
+        </div>
         ${this._incorrectAnswers.length !== 0 ?
           html`
-            <paper-card elevation="3">
+            <paper-card class="incorrect-answers" elevation="3">
               <div class="title">Incorrect answers:</div>
-              ${this._incorrectAnswers.map(card =>
+                ${this._incorrectAnswers.map(card =>
+                  html`
+                    <div class="answer-content">
+                      <div>Question ${this._cards.indexOf(card) + 1}:</div>
+                      <div>${card.question}</div>
+                      <div>Correct Answer:</div>
+                      <div>${card.answer}</div>
+                    </div>
+                  `
+                )}
+              </div>
+            </paper-card>
+          ` : null
+        }
+        ${this._correctAnswers.length !== 0 ?
+          html`
+            <paper-card class="correct-answers" elevation="3">
+              <div class="title">Correct answers:</div>
+              ${this._correctAnswers.map(card =>
                 html`
-                  <div>Question ${this._cards.indexOf(card) + 1}</div>
-                  <div>${card.question}</div>
-                  <div>Correct Answer:</div>
-                  <div>${card.answer}</div>
+                  <div class="answer-content">
+                    <div>Question ${this._cards.indexOf(card) + 1}:</div>
+                    <div>${card.question}</div>
+                  </div>
                 `
               )}
             </paper-card>
@@ -100,12 +157,7 @@ class QuestionsPage extends connect(store)(LitElement) {
 
   constructor() {
     super();
-    this._incorrectAnswers = [];
-    this._correctAnswers = [];
-    this._activePage = 'questions';
-    this._cards = store.getState().app.currentCollection.cards;
-    this._currentCard = this._cards[0];
-    this._currentCardIndex = 0;
+    this._initializeQuestions();
   }
 
   stateChanged(state) {
@@ -114,6 +166,15 @@ class QuestionsPage extends connect(store)(LitElement) {
       this._currentCard = this._cards[0]
       this._currentCardIndex = 0;
     }
+  }
+
+  _initializeQuestions() {
+    this._incorrectAnswers = [];
+    this._correctAnswers = [];
+    this._cards = store.getState().app.currentCollection.cards;
+    this._currentCard = this._cards[0];
+    this._currentCardIndex = 0;
+    this._activePage = 'questions';
   }
 
   _submitAnswer() {
@@ -127,7 +188,6 @@ class QuestionsPage extends connect(store)(LitElement) {
     // Finished all questions, we must now show the results of the questions
     if (this._currentCardIndex >= this._cards.length) {
       this._activePage = 'answers';
-      console.log(this._incorrectAnswers);
       return;
     }
     this._currentCard = this._cards[this._currentCardIndex];
