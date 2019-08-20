@@ -6,6 +6,7 @@ from api import views
 
 router = routers.DefaultRouter()
 router.register(r'cards', views.CardViewSet)
+router.register(r'collections', views.CollectionViewSet)
 
 urlpatterns = [
     path('get_initial_values/', views.get_initial_values),

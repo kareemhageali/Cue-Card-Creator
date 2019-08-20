@@ -3,11 +3,6 @@ import { setPassiveTouchGestures } from '@polymer/polymer/lib/utils/settings.js'
 import { connect } from 'pwa-helpers/connect-mixin.js';
 import { installRouter } from 'pwa-helpers/router.js';
 
-import '@polymer/app-layout/app-drawer/app-drawer.js';
-import '@polymer/app-layout/app-header/app-header.js';
-import '@polymer/app-layout/app-scroll-effects/effects/waterfall.js';
-import '@polymer/app-layout/app-toolbar/app-toolbar.js';
-
 import { store } from '../store.js';
 import { navigate, setInitialValues } from '../actions/app.js';
 import { getCookie } from '../../helpers.js';
@@ -59,7 +54,9 @@ class MyApp extends connect(store)(LitElement) {
   render() {
     return html`
       <main role="main" class="main-content">
+        <collection-viewer class="page" ?active="${this._page === 'collections'}"></collection-viewer>
         <card-creator class="page" ?active="${this._page === 'create'}"></card-creator>
+        <questions-page class="page" ?active="${this._page === 'questions'}"></questions-page>
       </main>
     `;
   }
@@ -67,7 +64,6 @@ class MyApp extends connect(store)(LitElement) {
   constructor() {
     super();
     // To force all event listeners for gestures to be passive.
-    // See https://www.polymer-project.org/3.0/docs/devguide/settings#setting-passive-touch-gestures
     setPassiveTouchGestures(true);
     this._getInitialValues();
   }
@@ -81,8 +77,8 @@ class MyApp extends connect(store)(LitElement) {
   }
 
   _getInitialValues() {
-    const visitorIdQuery = getCookie('visitor_id') ? '?visitor_id=' + getCookie('visitor_id') : '';
-    fetch('/api/get_initial_values' + visitorIdQuery)
+    const visitorIdQuery = getCookie('visitor_id') ? '?visitor=' + getCookie('visitor_id') : '';
+    fetch('/api/get_initial_values/' + visitorIdQuery)
       .then(function(response) {
         return response.json();
       })
