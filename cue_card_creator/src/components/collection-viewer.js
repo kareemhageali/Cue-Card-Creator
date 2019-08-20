@@ -35,7 +35,7 @@ class CollectionViewer extends connect(store)(LitElement) {
         .collection-viewer-content {
           display: flex;
           flex-direction: column;
-          width: 80%;
+          width: 50%;
           margin: 0 auto;
           padding: 15px;
           border-radius: 8px;
@@ -45,9 +45,37 @@ class CollectionViewer extends connect(store)(LitElement) {
           margin-top: 20px;
         }
 
+        .page-header {
+          display: flex;
+          flex-direction: column;
+          width: 50%;
+          margin: 0 auto 20px;
+        }
+
+        #pageTitle {
+          font-size: 32px;
+        }
+
         #collectionName {
           font-size: 18px;
           font-weight: bold;
+        }
+
+        @media only screen and (max-width: 768px) {
+          .collection-viewer-content, .page-header {
+            width: 90%;
+          }
+        }
+
+        @media only screen and (max-width: 500px) {
+          .card-buttons {
+            display: flex;
+            flex-direction: column;
+          }
+
+          .card-buttons > paper-button:not(:last-of-type) {
+            margin-bottom: 20px;
+          }
         }
       `
     ];
@@ -55,6 +83,10 @@ class CollectionViewer extends connect(store)(LitElement) {
 
   render() {
     return html`
+      <div class="page-header">
+        <div id="pageTitle">Collections</div>
+        <div>Choose a collection to start answering questions!</div>
+      </div>
       ${this._collections.map(collection =>
         html`
           <paper-card class="collection-viewer-content" elevation="3">

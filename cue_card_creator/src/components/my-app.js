@@ -33,7 +33,7 @@ class MyApp extends connect(store)(LitElement) {
         }
 
         .main-content {
-          padding-top: 64px;
+          padding-top: 68px;
         }
 
         .page {
@@ -45,6 +45,12 @@ class MyApp extends connect(store)(LitElement) {
           flex-direction: column;
           width: 100%;
           height: 100%;
+        }
+
+        @media only screen and (max-width: 768px) {
+          .main-content {
+            padding-top: 32px;
+          }
         }
       }
       `
