@@ -4,6 +4,7 @@ import { connect } from 'pwa-helpers/connect-mixin.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-card/paper-card.js';
+import '@polymer/paper-toast/paper-toast.js';
 
 import { store } from '../store.js';
 import { getCookie } from '../../helpers.js';
@@ -92,6 +93,8 @@ class CardCreator extends connect(store)(LitElement) {
             </paper-card>
           `
         )}
+
+      <paper-toast id="creationToast">Created Successfully!</paper-toast>
     `;
   }
 
@@ -100,7 +103,7 @@ class CardCreator extends connect(store)(LitElement) {
   }
 
   stateChanged(state) {
-    this._cards = state.app.currentCollection.cards;
+    this._cards = state.app.currentCards;
     this._currentCollection = state.app.currentCollection;
   }
 
@@ -120,6 +123,9 @@ class CardCreator extends connect(store)(LitElement) {
                                     'X-CSRFToken': getCookie('csrftoken')}})
       .then(response => {
         this._fetchCards();
+        this.shadowRoot.querySelector('#creationToast').open();
+        this.shadowRoot.querySelector('#questionInput').value = '';
+        this.shadowRoot.querySelector('#answerInput').value = '';
         return response.json();
       });
   }
@@ -140,7 +146,7 @@ class CardCreator extends connect(store)(LitElement) {
         return response.json();
       })
       .then(function(cards){
-        store.dispatch(retrieveCards(cards, store.getState().app.currentCollection.id));
+        store.dispatch(retrieveCards(cards, store.getState().app.currentCollection));
       });
   }
 

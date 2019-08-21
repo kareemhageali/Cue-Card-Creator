@@ -178,6 +178,7 @@ class CollectionViewer extends connect(store)(LitElement) {
         return response.json();
       })
       .then(collection => {
+        this.shadowRoot.querySelector('#nameInput').value = '';
         this.shadowRoot.querySelector('#createCollectionDialog').close();
         store.dispatch(retrieveCollection(collection));
         store.dispatch(selectCollection(collection));

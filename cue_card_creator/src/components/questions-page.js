@@ -184,7 +184,10 @@ class QuestionsPage extends connect(store)(LitElement) {
   }
 
   stateChanged(state) {
-    this._cards = state.app.currentCollection.cards;
+    if (this._cards !== state.app.currentCollection.cards) {
+      this._cards = state.app.currentCollection.cards;
+      this._initializeQuestions();
+    }
     if (!this._currentCard) {
       this._currentCard = this._cards[0]
       this._currentCardIndex = 0;
