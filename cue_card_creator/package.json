@@ -11,6 +11,8 @@
   "dependencies": {
     "@polymer/app-layout": "^3.0.0",
     "@polymer/iron-autogrow-textarea": "^3.0.1",
+    "@polymer/iron-icon": "^3.0.1",
+    "@polymer/iron-icons": "^3.0.1",
     "@polymer/paper-button": "^3.0.1",
     "@polymer/paper-card": "^3.0.1",
     "@polymer/paper-dialog": "^3.0.1",

@@ -142,10 +142,10 @@ class CardCreator extends connect(store)(LitElement) {
 
   _fetchCards() {
     fetch('/api/cards/?collection=' + store.getState().app.currentCollection.id)
-      .then(function(response){
+      .then(response => {
         return response.json();
       })
-      .then(function(cards){
+      .then(cards => {
         store.dispatch(retrieveCards(cards, store.getState().app.currentCollection));
       });
   }
