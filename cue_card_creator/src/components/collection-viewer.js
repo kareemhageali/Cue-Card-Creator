@@ -5,8 +5,6 @@ import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-card/paper-card.js';
 import '@polymer/paper-dialog/paper-dialog.js';
 import '@polymer/paper-input/paper-input.js';
-import '@polymer/iron-icon/iron-icon.js';
-import '@polymer/iron-icons/iron-icons.js';
 
 import { store } from '../store.js';
 import { retrieveCollections, retrieveCollection, selectCollection, navigate } from '../actions/app.js';
@@ -124,11 +122,6 @@ class CollectionViewer extends connect(store)(LitElement) {
         <div id="pageTitle">Collections</div>
         <div>Choose a collection to start answering questions!</div>
         <paper-button id="openDialogButton" @click="${() => this._openCreateDialog()}">Create Collection</paper-button>
-        <div>
-          <paper-input id="searchInput" label="Search" @keydown="${(e) => this._onSearch(e)}">
-            <iron-icon icon="search" slot="suffix"></iron-icon>
-          </paper-input>
-        </div>
       </div>
       ${this._collections.map(collection =>
         html`
@@ -211,20 +204,6 @@ class CollectionViewer extends connect(store)(LitElement) {
   _viewCards(collection) {
     store.dispatch(selectCollection(collection));
     store.dispatch(navigate('/create'));
-  }
-
-  _onSearch(e) {
-    if (e.key === 'Enter') {
-      const searchQuery = this.shadowRoot.querySelector('#searchInput').value;
-      fetch('/api/collections/?visitor=' + store.getState().app.visitorId + '&search=' + searchQuery)
-        .then(response => {
-          return response.json();
-        })
-        .then(collections => {
-          this.shadowRoot.querySelector('#searchInput').value = '';
-          store.dispatch(retrieveCollections(collections));
-        });
-    }
   }
 }
 

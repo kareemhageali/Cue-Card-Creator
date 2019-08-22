@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from rest_framework import viewsets, filters
+from rest_framework import viewsets
 from rest_framework.response import Response
 
 from api.models import Card, Collection, Visitor
@@ -37,8 +37,6 @@ class CardViewSet(viewsets.ModelViewSet):
 class CollectionViewSet(viewsets.ModelViewSet):
     queryset = Collection.objects.all()
     serializer_class = CollectionSerializer
-    search_fields = ['name']
-    filter_backends = (filters.SearchFilter,)
 
     def get_queryset(self):
         queryset = self.queryset
