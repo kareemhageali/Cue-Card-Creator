@@ -29,7 +29,7 @@ const app = (state = INITIAL_STATE, action) => {
     case RETRIEVE_COLLECTION:
       return {
         ...state,
-        collections: [...state.collections, action.collection]
+        collections: [action.collection, ...state.collections]
       };
     case RETRIEVE_CARDS:
       const foundIndex = state.collections.findIndex(x => x.id === action.currentCollection.id);
