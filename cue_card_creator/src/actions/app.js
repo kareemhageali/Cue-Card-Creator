@@ -3,12 +3,13 @@ import {getCookie, setCookie} from '../../helpers.js';
 export const UPDATE_PAGE = 'UPDATE_PAGE';
 export const SET_INITIAL_VALUES = 'SET_INITIAL_VALUES';
 export const RETRIEVE_COLLECTIONS = 'RETRIEVE_COLLECTIONS';
+export const RETRIEVE_COLLECTION = 'RETRIEVE_COLLECTION';
 export const RETRIEVE_CARDS = 'RETRIEVE_CARDS'
 export const SELECT_COLLECTION = 'SELECT_COLLECTION';
 
-export const navigate = (path) => (dispatch) => {
+export const navigate = (path) => (dispatch, getState) => {
   // Extract the page name from path.
-  const page = path === '/' ? 'collections' : path.slice(1);
+  const page = path === '/' || !getState().app.visitorId ? 'collections' : path.slice(1);
 
   // Any other info you might want to extract from the path (like page type),
   // you can do here
@@ -30,6 +31,13 @@ export const retrieveCollections = (collections) => {
     type: RETRIEVE_COLLECTIONS,
     collections
   };
+};
+
+export const retrieveCollection = (collection) => {
+  return {
+    type: RETRIEVE_COLLECTION,
+    collection
+  }
 };
 
 export const retrieveCards = (cards, currentCollection) => {
@@ -66,6 +74,7 @@ const loadPage = (page) => (dispatch) => {
 };
 
 const updatePage = (page) => {
+  window.history.pushState({}, '', page);
   return {
     type: UPDATE_PAGE,
     page

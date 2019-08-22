@@ -3,7 +3,7 @@ import { connect } from 'pwa-helpers/connect-mixin.js';
 
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-card/paper-card.js';
-import '@polymer/iron-autogrow-textarea/iron-autogrow-textarea.js';
+import '@polymer/paper-input/paper-input.js';
 
 import { store } from '../store.js';
 
@@ -28,6 +28,8 @@ class QuestionsPage extends connect(store)(LitElement) {
 
         .content-block[active] {
           display: block;
+          width: 50%;
+          margin: 0 auto;
         }
 
         paper-button {
@@ -47,7 +49,7 @@ class QuestionsPage extends connect(store)(LitElement) {
         paper-card {
           display: flex;
           flex-direction: column;
-          width: 80%;
+          width: 100%;
           margin: 0 auto;
           padding: 15px;
           border-radius: 8px;
@@ -58,8 +60,19 @@ class QuestionsPage extends connect(store)(LitElement) {
         }
 
         .answer-content > div {
-          margin-top: 10px;
           font-size: 18px;
+        }
+
+        .answer-content > div:not(:last-of-type) {
+          padding-bottom: 5px;
+        }
+
+        .answer-content > .card-text {
+          font-size: 20px;
+        }
+
+        .answer-content > .card-data {
+          font-size: 16px;
         }
 
         .answer-content {
@@ -92,9 +105,19 @@ class QuestionsPage extends connect(store)(LitElement) {
         .results-header {
           display: flex;
           flex-direction: column;
-          width: 80%;
+          width: 100%;
           margin: auto;
           margin-bottom: 15px;
+        }
+
+        #retryButton {
+          width: 20%;
+        }
+
+        @media only screen and (max-width: 768px) {
+          .content-block[active] {
+            width: 90%;
+          }
         }
       `
     ];
@@ -106,7 +129,7 @@ class QuestionsPage extends connect(store)(LitElement) {
         <paper-card elevation="3">
           <div class="title">Question ${this._currentCardIndex + 1}:</div>
           <div>${this._currentCard.question}</div>
-          <iron-autogrow-textarea id="answerInput" rows="2" placeholder="What is the answer?"></iron-autogrow-textarea>
+          <paper-input id="answerInput" label="What is the answer?" required></paper-input>
           <div class="question-buttons">
               <paper-button @click="${(e) => this._submitAnswer(e)}">Submit</paper-button>
           </div>
@@ -116,7 +139,7 @@ class QuestionsPage extends connect(store)(LitElement) {
       <div class="content-block" ?active="${this._activePage === 'answers'}">
         <div class="results-header">
           <div class="page-title">Your results from collection: ${store.getState().app.currentCollection.name}</div>
-          <paper-button @click="${() => this._initializeQuestions()}">Retry?</paper-button>
+          <paper-button id="retryButton" @click="${() => this._initializeQuestions()}">Retry?</paper-button>
         </div>
         ${this._incorrectAnswers.length !== 0 ?
           html`
@@ -125,10 +148,10 @@ class QuestionsPage extends connect(store)(LitElement) {
                 ${this._incorrectAnswers.map(card =>
                   html`
                     <div class="answer-content">
-                      <div>Question ${this._cards.indexOf(card) + 1}:</div>
-                      <div>${card.question}</div>
-                      <div>Correct Answer:</div>
-                      <div>${card.answer}</div>
+                      <div class="card-text">Question ${this._cards.indexOf(card) + 1}:</div>
+                      <div class="card-data">${card.question}</div>
+                      <div class="card-text"> Correct Answer:</div>
+                      <div class="card-data">${card.answer}</div>
                     </div>
                   `
                 )}
@@ -161,8 +184,11 @@ class QuestionsPage extends connect(store)(LitElement) {
   }
 
   stateChanged(state) {
-    this._cards = state.app.currentCollection.cards;
-    if (!this._currentCard) {
+    if (this._cards !== state.app.currentCollection.cards) {
+      this._cards = state.app.currentCollection.cards;
+      this._initializeQuestions();
+    }
+    if (!this._currentCard && this._cards.length > 0) {
       this._currentCard = this._cards[0]
       this._currentCardIndex = 0;
     }
@@ -178,6 +204,10 @@ class QuestionsPage extends connect(store)(LitElement) {
   }
 
   _submitAnswer() {
+    if (!this.shadowRoot.querySelector('#answerInput').validate()) {
+      return;
+    }
+
     if (this._currentCard.answer.toLowerCase() === this.shadowRoot.querySelector('#answerInput').value.toLowerCase()) {
       this._correctAnswers.push(this._currentCard);
     } else {
@@ -190,6 +220,8 @@ class QuestionsPage extends connect(store)(LitElement) {
       this._activePage = 'answers';
       return;
     }
+
+    this.shadowRoot.querySelector('#answerInput').value = '';
     this._currentCard = this._cards[this._currentCardIndex];
     return;
   }

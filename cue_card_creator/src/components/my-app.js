@@ -10,7 +10,6 @@ import { getCookie } from '../../helpers.js';
 class MyApp extends connect(store)(LitElement) {
   static get properties() {
     return {
-      appTitle: { type: String },
       _page: { type: String },
     };
   }
@@ -33,7 +32,7 @@ class MyApp extends connect(store)(LitElement) {
         }
 
         .main-content {
-          padding-top: 64px;
+          padding-top: 68px;
         }
 
         .page {
@@ -45,6 +44,12 @@ class MyApp extends connect(store)(LitElement) {
           flex-direction: column;
           width: 100%;
           height: 100%;
+        }
+
+        @media only screen and (max-width: 768px) {
+          .main-content {
+            padding-top: 32px;
+          }
         }
       }
       `
@@ -79,10 +84,10 @@ class MyApp extends connect(store)(LitElement) {
   _getInitialValues() {
     const visitorIdQuery = getCookie('visitor_id') ? '?visitor=' + getCookie('visitor_id') : '';
     fetch('/api/get_initial_values/' + visitorIdQuery)
-      .then(function(response) {
+      .then(response => {
         return response.json();
       })
-      .then(function(initialValues) {
+      .then(initialValues => {
         store.dispatch(setInitialValues(initialValues));
       });
   }
