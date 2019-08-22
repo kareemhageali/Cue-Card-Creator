@@ -5,7 +5,7 @@
     "start": "polymer serve",
     "build": "polymer build --auto-base-path && gulp prpl-server",
     "build:static": "polymer build",
-    "serve": "prpl-server --root server/build",
+    "serve": "prpl-server --root server/build --port 8081",
     "serve:static": "polymer serve --port 5000 build/es5-bundled"
   },
   "dependencies": {

@@ -10,7 +10,6 @@ import { getCookie } from '../../helpers.js';
 class MyApp extends connect(store)(LitElement) {
   static get properties() {
     return {
-      appTitle: { type: String },
       _page: { type: String },
     };
   }
