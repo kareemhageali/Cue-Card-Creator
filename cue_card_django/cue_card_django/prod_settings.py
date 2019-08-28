@@ -3,11 +3,14 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = 'XXXXX-XXXXXXX-XXXXX'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '3.13.117.125',
+    '127.0.0.1'
+]
 
 
 # Application definition
@@ -106,10 +109,16 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = True
 # Cookie expires after 1 year
 SESSION_COOKIE_AGE = 31556952
 
 CORS_ORIGIN_WHITELIST = [
-    "http://127.0.0.1:8081",
+    "http://127.0.0.1:8080",
 ]
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+X_FRAME_OPTIONS = 'DENY'
