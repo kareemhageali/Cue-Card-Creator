@@ -129,7 +129,10 @@ class CollectionViewer extends connect(store)(LitElement) {
             <div id="collectionName">${collection.name}</div>
             <div>${collection.cards.length === 1 ? '1 card' : collection.cards.length + ' cards'}</div>
             <div class="card-buttons">
-                <paper-button @click="${() => this._openQuestions(collection)}">Start Answering</paper-button>
+                ${collection.cards.length > 0 ?
+                  html`
+                    <paper-button @click="${() => this._openQuestions(collection)}">Start Answering</paper-button>
+                  ` : null}
                 ${this._currentVisitor === collection.visitor ?
                     html`
                       <paper-button @click="${() => this._viewCards(collection)}">View Cards</paper-button>

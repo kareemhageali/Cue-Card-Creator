@@ -9,8 +9,12 @@ export const SELECT_COLLECTION = 'SELECT_COLLECTION';
 
 export const navigate = (path) => (dispatch, getState) => {
   // Extract the page name from path.
-  const page = path === '/' || !getState().app.visitorId ? 'collections' : path.slice(1);
+  let page = path === '/' || !getState().app.visitorId ? 'collections' : path.slice(1);
 
+  // Account for case of bundle name in URL
+  if (page.indexOf('/') >= 0) {
+    page = page.substring(page.indexOf('/') + 1);
+  }
   // Any other info you might want to extract from the path (like page type),
   // you can do here
   dispatch(loadPage(page));
